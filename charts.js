@@ -1,3 +1,5 @@
+// Dropdown menu 
+
 function init() {
   var selector = d3.select("#selDataset");
 
@@ -7,144 +9,124 @@ function init() {
     sampleNames.forEach((sample) => {
       selector.append("option").text(sample).property('value', sample);
     });
-})};
-
+    var initialSample = sampleNames[0];
+    buildMetadata(initialSample);
+    buildCharts(initialSample);
+  });
+}
 
 init();
 
 function optionChanged(newSample) {
   buildMetadata(newSample);
-  buildBarChart(newSample);
-  buildBubbleChart(newSample);
-  buildGaugeChart(newSample);
+  buildCharts(newSample);
 }
+
 // Print info the "Demographic Info" when a user chooses an ID number
 function buildMetadata(sample) {
-d3.json("samples.json").then((data) => {
-  var metadata = data.metadata;
-  var resultArray = metadata.filter(sampleObj => sampleObj.id == sample);
-  var result = resultArray[0];
-  var PANEL = d3.select("#sample-metadata");
+  d3.json("samples.json").then((data) => {
+    var metadata = data.metadata;
+    var resultArray = metadata.filter((sampleObj) => sampleObj.id == sample);
+    var pairs = Object.entries(resultArray[0]);
+    var PANEL = d3.select("#sample-metadata");
 
-  PANEL.html("");
-  Object.entries(result).forEach(([key, value]) => {
-    PANEL.append("h6").text(key.toUpperCase() + ': ' + value);
-  }) 
-
+    PANEL.html("");
+    var results = pairs.forEach(function (pair) {
+      PANEL.append("h6").text(pair[0] + ": " + pair[1]);
+    });
   });  
 }
-// bar chart
-function buildBarChart(sample) {
-  d3.json("samples.json").then((data) => {
-    var resultArray = data.samples.filter(sampleObj => {
-      return sampleObj.id == sample 
-    });
-    var result = resultArray[0];
-    var topTenOtuIds = result.OtuIds.slice(0, 10).map(numericIds => {
-      return 'OTU' + numericIds;
-    }).reverse();
 
-    var topTenSampleValues = result.sampleValues.slice(0,10).reverse();
-    var topTenOtuLabels = result.OtuLabels.slice(0, 10).reverse();
+// Build charts when user chooses an ID number
+function buildCharts(sample) {
+  d3.json("samples.json").then(function ({ samples, metadata }) {
+    var data = samples.filter((obj) => obj.id == sample)[0];
+    console.log(data);
+    // data for bar chart
+    var otuIDs = data.otu_ids.map((row) => `OTU ID: ${row}`);
+    var sampleValues = data.sample_values.slice(0,10).reverse();
+    var sampleLabels = data.otu_labels.map((label) => 
+      label.replace(/\;/g, ", ")
+    );
+    // data for bubble chart
+    var otuID = data.otu_ids;
+    var sampleValue = data.sample_values;
+    var sampleLabel = data.otu_labels.map((label) =>
+      label.replace(/\;/g, ", ")
+    );
+    // data for gauge chart
+    var metadata = metadata.filter((obj) => obj.id == sample)[0];
+    var washFreq = metadata.wfreq;
 
-    var barTrace = [
+    // bar chart data
+    var data1 =  [
       {
-        x: topTenSampleValues,
-        y: topTenOtuIds,
-        text: topTenOtuLabels,
-        name: "Top 10",
-        type: 'bar',
-        orientation: 'h'
-      }
+        x: sampleValues,
+        y: otuIDs,
+        type: "bar",
+        orientation: "h",
+        text: sampleLabels,
+        hoverinfo: "text",
+      },
     ];
-    var data = [barTrace];
-    var barLayout = {
-      title: "Top 10 OTUs",
-    }; 
-    Plotly.newPlot('bar', barTrace, barLayout)
-  });
-}
-// bubble chart
-function buildBubbleChart(sample) {
-  d3.json("samples.json").then((data) => {
-    var resultArray = data.samples.filter(sampleObj => {
-      return sampleObj.id == sample 
-    });
-    
-    var result = resultArray[0];
-    
-    var OtuIds= result.OtuIds.map(numericIds => {
-      return numericIds;
-    });
 
-    var sampleValues = result.sampleVales;
-    var OtuLabels = result.OtuLabels;
-    var bubbleTrace= {
-      x: OtuIds,
-      y: sampleValues,
-      text: OtuLabels,
-      mode: 'markers',
-      marker: {
-        color: OtuIds,
-        size: sampleValues
-      }
-    }; 
-    var data = [bubbleTrace];
-    var bubbleLayout = {
-      title: "OTU ID",
-      showlegend: false,
-
-    };
-
-    Plotly.newPlot('bubble', data, bubbleLayout)
-
-  });
-}
-
-  // gauge chart
-
-  function buildGaugeChart(sample) {
-    d3.json("samples.json").then((data)=> {
-      var metadata = data.metadata;
-      var resultArray = metadata.filter(sampleObj.id == sample)
-    });
-    console.log(resultArray);
-    var result = resultArray[0];
-    console.log(result);
-    var washFreq = result.wfreq;
-    console.log(washFreq);
-    
-    var gaugeTrace = [
+    // bubble chart data
+    var data2 =[
       {
-        domain: {x: [0,1], y: [0,1] },
+        x: otuID,
+        y: sampleValue,
+        mode: "markers",
+        text: sampleLabel,
+        marker: {
+          size: sampleValue,
+          color: otuID,
+        },
+      },
+    ];
+    // gauge chart data
+    var data3 = [
+      {
         value: washFreq,
-        title: {text: samples.getElementsByTagName("TITLE")[0].text},
+        title: {
+          text: "Belly Button Washing Frequency <br> Scrubs per Week",
+        },
         type: "indicator",
         mode: "gauge+number",
         gauge: {
-          axis: { range: [null, 10]},
+          axis: {range: [null, 10] },
           bar: { color: "black" },
           steps: [
-            { range: [0, 1], color: 'rgba(0, 0, 0, 0.5)' },
-            { range: [1, 2], color: 'rgba(0, 0, 0, 0.5)' },
-            { range: [2, 3], color: 'rgba(183,28,28, .5)' },
-            { range: [3, 4], color: 'rgba(183,28,28, .5)' },
-            { range: [4, 5], color: 'rgba(249, 168, 37, .5)' },
-            { range: [5, 6], color: 'rgba(249, 168, 37, .5)' },
-            { range: [6, 7], color: 'rgba(110, 154, 22, .5)' },
-            { range: [7, 8], color: 'rgba(110, 154, 22, .5)' },
-            { range: [8, 9], color: 'rgba(14, 127, 0, .5)' },
-            { range: [9, 10], color: 'rgba(14, 127, 0, .5)' }
-          ],
-        }  
-      }
+            { range: [0, 2], color: "red" },
+            { range: [2, 4], color: "orange" },
+            { range: [4, 6], color: "yellow" },
+            { range: [6, 8], color: "green" },
+            { range: [8, 10], color: "blue" } 
+          ], 
+        },
+      },
     ];
-    var gaugeLayout = {
+
+    // bar chart layout
+    var layout1 = {
+      margin: {
+        t: 40,
+        l: 150,
+      },
+      title: {
+        text: "Top 10 Bacterial Species (OTUs)",      }
+    };
+    // bubble chart layout
+    var layout2 = {
+      xaxis: { title: "OTU ID" },
+    };
+    // gauge chart layout
+    var layout3 = {
       width: 600,
       height: 500,
-      margin: { t: 0, b: 0 }
+      margin: {t: 0, b: 0 },
     };
-    Plotly.newPlot('gauge', gaugeTrace, gaugeLayout);
-
-  };
-
+    Plotly.newPlot("bar", data1, layout1);
+    Plotly.newPlot("bubble", data2, layout2);
+    Plotly.newPlot("gauge", data3, layout3);
+  });
+}
