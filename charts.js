@@ -4,8 +4,7 @@ function init() {
   d3.json("samples.json").then((data) => {
     var sampleNames = data.names;
     sampleNames.forEach((sample) => {
-      selector
-        .append("option").text(sample).property('value', sample);
+      selector.append("option").text(sample).property('value', sample);
     });
     var initialSample = sampleNames[0];
     buildMetadata(initialSample);
@@ -36,12 +35,12 @@ d3.json("samples.json").then((data) => {
 
 // Bar and Bubble charts
 // Create the buildCharts function.
-function buildCharts(newSample) {
+function buildCharts(sample) {
   d3.json("samples.json").then(function ({samples,metadata }) {
       var data = samples.filter((obj) => obj.id == sample) [0];
       console.log(data);
       // data for bar chart
-      var otuIDS = data.otu_ids.map((row) => `OUT ID: ${row}`);
+      var otuIDS = data.otu_ids.map((row) => `OTU ID: ${row}`);
       var sampleValues = data.sample_values.slice(0, 10);
       var sampleLabels = data.otu_labels.map((label) => 
         label.replace(/\;/g, ', ')
@@ -67,8 +66,7 @@ function buildCharts(newSample) {
         text: sampleLabels,
         hoverinfo: 'text',
         },
-      ],
-
+      ];
       // data for bubble chart
       var data2 = [
         {
@@ -82,7 +80,6 @@ function buildCharts(newSample) {
           },
         },
       ];
-
       // data for gauge chart
       var data3 = [
         {
@@ -109,11 +106,11 @@ function buildCharts(newSample) {
           text: 'Top 10 Bacterial Species (OTUs)',
         },
       };
-      //layout for bubble chart
+      // layout for bubble chart
       var layout2 = {
         xaxis: { title: 'OTU ID' },
       };
-      //layout for gauge chart
+      // layout for gauge chart
       var layout3 = {
         width: 600,
         height: 500,
