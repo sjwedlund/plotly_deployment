@@ -72,12 +72,10 @@ function buildCharts(sample) {
         {
           x: otuID,
           y: sampleValue,
-          mode: sampleLabel,
-          text: sampleLabel,
+          mode: 'markers',
           marker: {
-            size: sampleValue,
-            color: otuID,
-          },
+            size: sampleValue
+          }
         },
       ];
       // data for gauge chart
@@ -108,7 +106,10 @@ function buildCharts(sample) {
       };
       // layout for bubble chart
       var layout2 = {
-        xaxis: { title: 'OTU ID' },
+        title: 'Bacteria Cultures Per Sample',
+        showlegend: false,
+        height: 600,
+        width: 600
       };
       // layout for gauge chart
       var layout3 = {
