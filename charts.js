@@ -66,8 +66,8 @@ function buildCharts(newSample) {
         orientation: 'h',
         text: sampleLabels,
         hoverinfo: 'text',
-        };
-      ];
+        },
+      ],
 
       // data for bubble chart
       var data2 = [
@@ -77,7 +77,7 @@ function buildCharts(newSample) {
           mode: sampleLabel,
           text: sampleLabel,
           marker: {
-            size: sampleValue
+            size: sampleValue,
             color: otuID,
           },
         },
