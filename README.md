@@ -23,7 +23,7 @@ Using JavaScript, Plotly, and D3.js, I have created a bubble chart that displays
 
 ## Gauge Chart
 <img width="584" alt="Screen Shot 2022-01-06 at 1 42 33 PM" src="https://user-images.githubusercontent.com/85920136/148456366-d23c727b-b6dc-45eb-b1a9-e246b5a19e73.png">
-Using JavaScript, Plotly and D3.js, I have created a gauge chart that displays the weekly washing frequency's value, and displays the value as a measure from 0-10 on the progress bar in the gauge chart when an invidual ID is selected from the dropdown menu. 
+Using JavaScript, Plotly and D3.js, I have created a gauge chart that displays the weekly washing frequency's value, and displays the value as a measure from 0-10 on the progress bar in the gauge chart when an individual ID is selected from the dropdown menu. 
 
 
 
