@@ -11,10 +11,11 @@ The purpose of this assignment is to read in a JSON file of bacterial data and i
 - APIs
 - JSON
 
+## Project Description
+
 ## Horizontal Bar Chart
 <img width="602" alt="Screen Shot 2022-01-06 at 1 42 53 PM" src="https://user-images.githubusercontent.com/85920136/148456306-e8215455-142e-4389-acb6-0d5ce1b646b9.png">
-
-
+Using my knowledge of JavaScript, Plotly, and D3.js, I have createrd a horizontal bar chart to display the top 10 bacterial species (OTUs) when an individual's ID is selected from the dropdown menu on the weboage. The horizontal bar chart displays the sample values as the values, the OTU IDs as the labels, and the OTU labels as the hover text for the bars on the chart. 
 
 ## Bubble Chart
 <img width="703" alt="Screen Shot 2022-01-06 at 1 42 44 PM" src="https://user-images.githubusercontent.com/85920136/148456351-993ed7a1-eab8-478f-acec-c7342283f48e.png">
