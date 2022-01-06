@@ -21,9 +21,9 @@ Using JavaScript, Plotly, and D3.js, I have created a horizontal bar chart to di
 <img width="703" alt="Screen Shot 2022-01-06 at 1 42 44 PM" src="https://user-images.githubusercontent.com/85920136/148456351-993ed7a1-eab8-478f-acec-c7342283f48e.png">
 Using JavaScript, Plotly, and D3.js, I have created a bubble chart that displays the OTU IDs as the axis values when an individual's ID is selected from the dropdown menu webpage. It also displays the sample values as the y-axis values, the sample values as the marker size, the OTU IDs as the marker colors and the OTU labels as the hover-text values. 
 
-
 ## Gauge Chart
 <img width="584" alt="Screen Shot 2022-01-06 at 1 42 33 PM" src="https://user-images.githubusercontent.com/85920136/148456366-d23c727b-b6dc-45eb-b1a9-e246b5a19e73.png">
+Using JavaScript, Plotly and D3.js, I have created a gauge chart that displays the weekly washing frequency's value, and displays the value as a measure from 0-10 on the progress bar in the gauge chart when an invidual ID is selected from the dropdown menu. 
 
 
 
